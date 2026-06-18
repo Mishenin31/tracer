@@ -30,9 +30,8 @@ namespace HabitTracker.Views
                 return;
             }
 
-            DataStore.Instance.Categories.Add(new Category
+            DataStore.Instance.AddCategory(new Category
             {
-                Id = DataStore.Instance.NextCatId(),
                 Name = name,
                 ColorHex = color
             });
@@ -54,7 +53,7 @@ namespace HabitTracker.Views
                 if (MessageBox.Show($"Удалить категорию «{c.Name}»?", "Подтверждение",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    DataStore.Instance.Categories.Remove(c);
+                    DataStore.Instance.DeleteCategory(c);
                 }
             }
         }

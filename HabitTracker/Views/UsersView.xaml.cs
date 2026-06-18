@@ -47,9 +47,8 @@ namespace HabitTracker.Views
             }
 
             var role = ((RoleOption)RoleCombo.SelectedItem).Role;
-            DataStore.Instance.Users.Add(new User
+            DataStore.Instance.AddUser(new User
             {
-                Id = DataStore.Instance.NextUserId(),
                 FullName = name,
                 Login = login,
                 Password = pass,
@@ -74,7 +73,7 @@ namespace HabitTracker.Views
                 if (MessageBox.Show($"Удалить пользователя «{u.FullName}»?", "Подтверждение",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    DataStore.Instance.Users.Remove(u);
+                    DataStore.Instance.DeleteUser(u);
                 }
             }
         }

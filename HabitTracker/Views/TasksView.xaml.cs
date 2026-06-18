@@ -41,13 +41,12 @@ namespace HabitTracker.Views
 
             var task = new TaskItem
             {
-                Id = DataStore.Instance.NextTaskId(),
                 UserId = DataStore.Instance.CurrentUser!.Id,
                 Title = title,
                 Priority = (TaskPriority)PriorityCombo.SelectedItem,
                 DueDate = DuePicker.SelectedDate
             };
-            DataStore.Instance.Tasks.Add(task);
+            DataStore.Instance.AddTask(task);
             Refresh();
 
             TitleBox.Clear();
@@ -56,6 +55,11 @@ namespace HabitTracker.Views
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is CheckBox cb && cb.Tag is TaskItem task)
+            {
+                task.IsDone = cb.IsChecked == true;
+                DataStore.Instance.UpdateTask(task);
+            }
             Refresh();
         }
 
@@ -63,7 +67,7 @@ namespace HabitTracker.Views
         {
             if (sender is Button b && b.Tag is TaskItem t)
             {
-                DataStore.Instance.Tasks.Remove(t);
+                DataStore.Instance.DeleteTask(t);
                 _items.Remove(t);
             }
         }

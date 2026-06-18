@@ -76,7 +76,7 @@ namespace HabitTracker.Views
                 FullName = name,
                 Role = UserRole.User
             };
-            DataStore.Instance.Users.Add(user);
+            DataStore.Instance.AddUser(user);
             DataStore.Instance.CurrentUser = user;
 
             var main = new MainWindow();
