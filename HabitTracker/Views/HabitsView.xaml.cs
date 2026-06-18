@@ -43,14 +43,13 @@ namespace HabitTracker.Views
             var freq = (HabitFrequency)FreqCombo.SelectedItem;
             var habit = new Habit
             {
-                Id = DataStore.Instance.NextHabitId(),
                 UserId = DataStore.Instance.CurrentUser!.Id,
                 Name = name,
                 Category = CategoryCombo.SelectedItem as Category,
                 Frequency = freq,
                 TargetPerWeek = freq == HabitFrequency.Ежедневно ? 7 : 1
             };
-            DataStore.Instance.Habits.Add(habit);
+            DataStore.Instance.AddHabit(habit);
             _items.Add(habit);
 
             NameBox.Clear();
@@ -63,7 +62,7 @@ namespace HabitTracker.Views
                 if (MessageBox.Show($"Удалить привычку «{h.Name}»?", "Подтверждение",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    DataStore.Instance.Habits.Remove(h);
+                    DataStore.Instance.DeleteHabit(h);
                     _items.Remove(h);
                 }
             }

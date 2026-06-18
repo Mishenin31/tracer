@@ -1,4 +1,7 @@
+using System.IO;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using QRCoder;
 using HabitTracker.Data;
 
 namespace HabitTracker.Views
@@ -50,6 +53,33 @@ namespace HabitTracker.Views
                 .ToList();
 
             ProgressList.ItemsSource = bars;
+
+            var report = $"Пользователь: {DataStore.Instance.CurrentUser!.FullName}\n" +
+                         $"Дата отчёта: {DateTime.Now:dd.MM.yyyy HH:mm}\n" +
+                         $"Всего привычек: {habits.Count}\n" +
+                         $"Отметок за неделю: {weekChecks}\n" +
+                         $"Задач выполнено: {tasks.Count(t => t.IsDone)} / {tasks.Count}\n" +
+                         $"Лучшая серия: {best} дн.\n" +
+                         $"Хранилище: {DataStore.Instance.StorageInfo}";
+            ReportQrImage.Source = CreateQrImage(report);
+            ReportQrText.Text = "QR отчёта: сводка статистики и источник данных";
+        }
+
+        private static BitmapImage CreateQrImage(string text)
+        {
+            using var generator = new QRCodeGenerator();
+            using var qrData = generator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            var png = new PngByteQRCode(qrData);
+            var bytes = png.GetGraphic(12);
+
+            using var stream = new MemoryStream(bytes);
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.StreamSource = stream;
+            image.EndInit();
+            image.Freeze();
+            return image;
         }
     }
 }
