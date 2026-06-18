@@ -1,0 +1,70 @@
+<UserControl x:Class="HabitTracker.Views.HabitsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="36,32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Мои привычки" Style="{StaticResource H1}"/>
+
+        <!-- Форма добавления -->
+        <Border Grid.Row="1" Background="{StaticResource SurfaceBrush}" CornerRadius="14" Padding="20" Margin="0,20,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Название" Style="{StaticResource Muted}" Margin="0,0,0,6"/>
+                    <TextBox x:Name="NameBox" Style="{StaticResource InputBox}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Категория" Style="{StaticResource Muted}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="CategoryCombo" Style="{StaticResource InputCombo}"
+                              DisplayMemberPath="Display"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="Частота" Style="{StaticResource Muted}" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="FreqCombo" Style="{StaticResource InputCombo}"/>
+                </StackPanel>
+
+                <Button Grid.Column="6" Content="Добавить" Style="{StaticResource AccentButton}"
+                        VerticalAlignment="Bottom" Click="Add_Click"/>
+            </Grid>
+        </Border>
+
+        <DataGrid Grid.Row="2" x:Name="HabitsGrid" Style="{StaticResource DataGridStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ПРИВЫЧКА" Binding="{Binding Name}" Width="*"
+                                    ElementStyle="{StaticResource CellText}"/>
+                <DataGridTextColumn Header="КАТЕГОРИЯ" Binding="{Binding CategoryName}" Width="160"
+                                    ElementStyle="{StaticResource CellText}"/>
+                <DataGridTextColumn Header="ЧАСТОТА" Binding="{Binding FrequencyDisplay}" Width="130"
+                                    ElementStyle="{StaticResource CellText}"/>
+                <DataGridTextColumn Header="СЕРИЯ" Binding="{Binding StreakDisplay}" Width="100"
+                                    ElementStyle="{StaticResource CellText}"/>
+                <DataGridTemplateColumn Header="" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Удалить" Style="{StaticResource GhostButton}"
+                                    Padding="12,6" FontSize="12" Height="32"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Click="Delete_Click" Tag="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
